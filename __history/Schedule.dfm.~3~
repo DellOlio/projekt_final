@@ -1,0 +1,48 @@
+object ScheduleForm: TScheduleForm
+  Left = 0
+  Top = 0
+  Caption = 'Schedule'
+  ClientHeight = 596
+  ClientWidth = 826
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  TextHeight = 15
+  object ListView1: TListView
+    Left = 56
+    Top = 32
+    Width = 553
+    Height = 281
+    Columns = <
+      item
+        AutoSize = True
+        Caption = 'Name'
+      end
+      item
+        AutoSize = True
+        Caption = 'Day'
+      end
+      item
+        AutoSize = True
+        Caption = 'Time'
+      end
+      item
+        AutoSize = True
+        Caption = 'Room'
+      end>
+    TabOrder = 0
+    ViewStyle = vsReport
+  end
+  object LoadJSONButton: TButton
+    Left = 56
+    Top = 368
+    Width = 121
+    Height = 49
+    Caption = 'LoadJSONButton'
+    TabOrder = 1
+    OnClick = LoadJSONButtonClick
+  end
+end

@@ -1,0 +1,340 @@
+object DataModule1: TDataModule1
+  Height = 600
+  Width = 800
+  PixelsPerInch = 120
+  object Connection: TADOConnection
+    Connected = True
+    ConnectionString = 
+      'Provider=Microsoft.Jet.OLEDB.4.0;Data Source=C:\Users\Marin\Docu' +
+      'ments\Embarcadero\Studio\Projects\projekt268Real\projekt2\Win32\' +
+      'Debug\MoneyManagement.mdb;Mode=Share Deny None;Persist Security ' +
+      'Info=False;Jet OLEDB:System database="";Jet OLEDB:Registry Path=' +
+      '"";Jet OLEDB:Database Password="";Jet OLEDB:Engine Type=5;Jet OL' +
+      'EDB:Database Locking Mode=1;Jet OLEDB:Global Partial Bulk Ops=2;' +
+      'Jet OLEDB:Global Bulk Transactions=1;Jet OLEDB:New Database Pass' +
+      'word="";Jet OLEDB:Create System Database=False;Jet OLEDB:Encrypt' +
+      ' Database=False;Jet OLEDB:Don'#39't Copy Locale on Compact=False;Jet' +
+      ' OLEDB:Compact Without Replica Repair=False;Jet OLEDB:SFP=False'
+    Mode = cmShareDenyNone
+    Provider = 'Microsoft.Jet.OLEDB.4.0'
+    Left = 60
+    Top = 30
+  end
+  object KorisnikTable: TADOTable
+    Active = True
+    Connection = Connection
+    CursorType = ctStatic
+    TableName = 'Korisnici'
+    Left = 50
+    Top = 110
+    object KorisnikTableID: TAutoIncField
+      FieldName = 'ID'
+      ReadOnly = True
+    end
+    object KorisnikTableOIB: TWideStringField
+      FieldName = 'OIB'
+      Size = 255
+    end
+    object KorisnikTableIme: TWideStringField
+      FieldName = 'Ime'
+      Size = 255
+    end
+    object KorisnikTablePrezime: TWideStringField
+      FieldName = 'Prezime'
+      Size = 255
+    end
+    object KorisnikTableStarost: TIntegerField
+      FieldName = 'Starost'
+    end
+    object KorisnikTableMjestoID: TIntegerField
+      FieldName = 'MjestoID'
+    end
+    object KorisnikTableSlika: TBlobField
+      FieldName = 'Slika'
+    end
+  end
+  object KorisnikDataSource: TDataSource
+    DataSet = KorisnikTable
+    Left = 50
+    Top = 210
+  end
+  object PrihodiDataSource: TDataSource
+    DataSet = PrihodiTable
+    Left = 240
+    Top = 220
+  end
+  object PrihodiTable: TADOTable
+    Active = True
+    Connection = Connection
+    CursorType = ctStatic
+    OnCalcFields = PrihodiTableCalcFields
+    IndexFieldNames = 'KorisnikID'
+    TableName = 'Prihodi'
+    Left = 240
+    Top = 110
+    object PrihodiTableID: TAutoIncField
+      FieldName = 'ID'
+      ReadOnly = True
+    end
+    object PrihodiTableVrsta: TWideStringField
+      FieldName = 'Vrsta'
+      Size = 255
+    end
+    object PrihodiTableIznosEUR: TIntegerField
+      FieldName = 'IznosEUR'
+    end
+    object PrihodiTableIznosKN: TIntegerField
+      FieldKind = fkCalculated
+      FieldName = 'IznosKN'
+      Calculated = True
+    end
+    object PrihodiTableDatum: TDateTimeField
+      FieldName = 'Datum'
+    end
+    object PrihodiTableKorisnikPrezime: TStringField
+      FieldKind = fkLookup
+      FieldName = 'KorisnikPrezime'
+      LookupDataSet = KorisnikTable
+      LookupKeyFields = 'ID'
+      LookupResultField = 'Prezime'
+      KeyFields = 'KorisnikID'
+      Size = 40
+      Lookup = True
+    end
+    object PrihodiTableKorisnikID: TIntegerField
+      FieldName = 'KorisnikID'
+    end
+  end
+  object TroskoviTable: TADOTable
+    Active = True
+    Connection = Connection
+    CursorType = ctStatic
+    OnCalcFields = TroskoviTableCalcFields
+    TableName = 'Trok'#353'ovi'
+    Left = 440
+    Top = 110
+    object TroskoviTableID: TAutoIncField
+      FieldName = 'ID'
+      ReadOnly = True
+    end
+    object TroskoviTableOpis: TWideStringField
+      FieldName = 'Opis'
+      Size = 100
+    end
+    object TroskoviTableIznosEUR: TIntegerField
+      FieldName = 'IznosEUR'
+    end
+    object TroskoviTableIznosKN: TIntegerField
+      FieldKind = fkCalculated
+      FieldName = 'IznosKN'
+      Calculated = True
+    end
+    object TroskoviTableDatum: TDateTimeField
+      FieldName = 'Datum'
+    end
+    object TroskoviTableKorisnikPrezime: TStringField
+      FieldKind = fkLookup
+      FieldName = 'KorisnikPrezime'
+      LookupDataSet = KorisnikTable
+      LookupKeyFields = 'ID'
+      LookupResultField = 'Prezime'
+      KeyFields = 'KorisnikID'
+      Size = 40
+      Lookup = True
+    end
+    object TroskoviTableKorisnikID: TIntegerField
+      FieldName = 'KorisnikID'
+    end
+  end
+  object MjestaTable: TADOTable
+    Active = True
+    Connection = Connection
+    CursorType = ctStatic
+    TableName = 'Mjesta'
+    Left = 620
+    Top = 110
+    object MjestaTableID: TAutoIncField
+      FieldName = 'ID'
+      ReadOnly = True
+    end
+    object MjestaTableNaziv: TWideStringField
+      FieldName = 'Naziv'
+      Size = 255
+    end
+    object MjestaTableZupanija: TWideStringField
+      FieldName = 'Zupanija'
+      Size = 255
+    end
+  end
+  object TroskoviDataSource: TDataSource
+    DataSet = TroskoviTable
+    Left = 430
+    Top = 220
+  end
+  object MjestaDataSource: TDataSource
+    DataSet = MjestaTable
+    Left = 620
+    Top = 220
+  end
+  object FRKorisnikTable: TADOTable
+    Active = True
+    Connection = Connection
+    CursorType = ctStatic
+    TableName = 'Korisnici'
+    Left = 50
+    Top = 330
+    object AutoIncField1: TAutoIncField
+      FieldName = 'ID'
+      ReadOnly = True
+    end
+    object WideStringField1: TWideStringField
+      FieldName = 'OIB'
+      Size = 255
+    end
+    object WideStringField2: TWideStringField
+      FieldName = 'Ime'
+      Size = 255
+    end
+    object WideStringField3: TWideStringField
+      FieldName = 'Prezime'
+      Size = 255
+    end
+    object IntegerField1: TIntegerField
+      FieldName = 'Starost'
+    end
+    object IntegerField2: TIntegerField
+      FieldName = 'MjestoID'
+    end
+    object BlobField1: TBlobField
+      FieldName = 'Slika'
+    end
+  end
+  object FRKorisnikDataSource: TDataSource
+    DataSet = FRKorisnikTable
+    Left = 60
+    Top = 440
+  end
+  object FRPrihodiDataSource: TDataSource
+    DataSet = FRPrihodiTable
+    Left = 230
+    Top = 440
+  end
+  object FRPrihodiTable: TADOTable
+    Active = True
+    Connection = Connection
+    CursorType = ctStatic
+    OnCalcFields = PrihodiTableCalcFields
+    IndexFieldNames = 'KorisnikID'
+    MasterFields = 'ID'
+    MasterSource = FRKorisnikDataSource
+    TableName = 'Prihodi'
+    Left = 230
+    Top = 330
+    object AutoIncField2: TAutoIncField
+      FieldName = 'ID'
+      ReadOnly = True
+    end
+    object WideStringField4: TWideStringField
+      FieldName = 'Vrsta'
+      Size = 255
+    end
+    object IntegerField3: TIntegerField
+      FieldName = 'IznosEUR'
+    end
+    object IntegerField4: TIntegerField
+      FieldKind = fkCalculated
+      FieldName = 'IznosKN'
+      Calculated = True
+    end
+    object DateTimeField1: TDateTimeField
+      FieldName = 'Datum'
+    end
+    object StringField1: TStringField
+      FieldKind = fkLookup
+      FieldName = 'KorisnikPrezime'
+      LookupDataSet = FRKorisnikTable
+      LookupKeyFields = 'ID'
+      LookupResultField = 'Prezime'
+      KeyFields = 'KorisnikID'
+      Size = 40
+      Lookup = True
+    end
+    object IntegerField5: TIntegerField
+      FieldName = 'KorisnikID'
+    end
+  end
+  object FRTroskoviTable: TADOTable
+    Active = True
+    Connection = Connection
+    CursorType = ctStatic
+    OnCalcFields = TroskoviTableCalcFields
+    IndexFieldNames = 'KorisnikID'
+    MasterFields = 'ID'
+    MasterSource = FRKorisnikDataSource
+    TableName = 'Trok'#353'ovi'
+    Left = 430
+    Top = 330
+    object AutoIncField3: TAutoIncField
+      FieldName = 'ID'
+      ReadOnly = True
+    end
+    object WideStringField5: TWideStringField
+      FieldName = 'Opis'
+      Size = 100
+    end
+    object IntegerField6: TIntegerField
+      FieldName = 'IznosEUR'
+    end
+    object IntegerField7: TIntegerField
+      FieldKind = fkCalculated
+      FieldName = 'IznosKN'
+      Calculated = True
+    end
+    object DateTimeField2: TDateTimeField
+      FieldName = 'Datum'
+    end
+    object StringField2: TStringField
+      FieldKind = fkLookup
+      FieldName = 'KorisnikPrezime'
+      LookupDataSet = FRKorisnikTable
+      LookupKeyFields = 'ID'
+      LookupResultField = 'Prezime'
+      KeyFields = 'KorisnikID'
+      Size = 40
+      Lookup = True
+    end
+    object IntegerField8: TIntegerField
+      FieldName = 'KorisnikID'
+    end
+  end
+  object FrMjestaTable: TADOTable
+    Active = True
+    Connection = Connection
+    CursorType = ctStatic
+    TableName = 'Mjesta'
+    Left = 610
+    Top = 330
+    object AutoIncField4: TAutoIncField
+      FieldName = 'ID'
+      ReadOnly = True
+    end
+    object WideStringField6: TWideStringField
+      FieldName = 'Naziv'
+      Size = 255
+    end
+    object WideStringField7: TWideStringField
+      FieldName = 'Zupanija'
+      Size = 255
+    end
+  end
+  object FRTrosokviDataSource: TDataSource
+    DataSet = FRTroskoviTable
+    Left = 420
+    Top = 440
+  end
+  object FRMjestaDataSource: TDataSource
+    DataSet = FrMjestaTable
+    Left = 610
+    Top = 440
+  end
+end

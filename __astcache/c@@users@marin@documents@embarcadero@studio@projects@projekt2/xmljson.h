@@ -1,0 +1,41 @@
+﻿//---------------------------------------------------------------------------
+
+#ifndef xmlJsonH
+#define xmlJsonH
+//---------------------------------------------------------------------------
+#include <System.Classes.hpp>
+#include <Vcl.Controls.hpp>
+#include <Vcl.StdCtrls.hpp>
+#include <Vcl.Forms.hpp>
+#include <Vcl.ComCtrls.hpp>
+#include <Xml.XMLDoc.hpp>
+#include <Xml.xmldom.hpp>
+#include <Xml.XMLIntf.hpp>
+//---------------------------------------------------------------------------
+class TForm1 : public TForm
+{
+__published:	// IDE-managed Components
+	TLabel *Label1;
+	TLabel *Label2;
+	TLabel *Label3;
+	TListView *ListView1;
+	TButton *XmlLoadButton;
+	TButton *AddTaskButton;
+	TButton *DeleteTaskButton;
+	TButton *EditTaskButton;
+	TEdit *NameEdit;
+	TEdit *DurationEdit;
+	TEdit *DifficultyEdit;
+	TXMLDocument *XMLDocument;
+	void __fastcall XmlLoadButtonClick(TObject *Sender);
+	void __fastcall AddTaskButtonClick(TObject *Sender);
+	void __fastcall DeleteTaskButtonClick(TObject *Sender);
+	void __fastcall EditTaskButtonClick(TObject *Sender);
+private:	// User declarations
+public:		// User declarations
+	__fastcall TForm1(TComponent* Owner);
+};
+//---------------------------------------------------------------------------
+extern PACKAGE TForm1 *Form1;
+//---------------------------------------------------------------------------
+#endif

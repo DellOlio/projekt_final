@@ -1,0 +1,21 @@
+//---------------------------------------------------------------------------
+
+#ifndef ScheduleH
+#define ScheduleH
+//---------------------------------------------------------------------------
+#include <System.Classes.hpp>
+#include <Vcl.Controls.hpp>
+#include <Vcl.StdCtrls.hpp>
+#include <Vcl.Forms.hpp>
+//---------------------------------------------------------------------------
+class TScheduleForm : public TForm
+{
+__published:	// IDE-managed Components
+private:	// User declarations
+public:		// User declarations
+	__fastcall TScheduleForm(TComponent* Owner);
+};
+//---------------------------------------------------------------------------
+extern PACKAGE TScheduleForm *ScheduleForm;
+//---------------------------------------------------------------------------
+#endif

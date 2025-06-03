@@ -1,0 +1,94 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "Settings.h"
+#include <Registry.hpp>
+#include "Main.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TSettingsForm *SettingsForm;
+//---------------------------------------------------------------------------
+__fastcall TSettingsForm::TSettingsForm(TComponent* Owner)
+	: TForm(Owner)
+{
+	Width = 300;
+	Height = 300;
+}
+//---------------------------------------------------------------------------
+void __fastcall TSettingsForm::FormClose(TObject *Sender, TCloseAction &Action)
+{
+	TIniFile* ini = new TIniFile(GetCurrentDir() + "\\settings.ini");
+	ini->WriteBool("Main Window", "Underline",UnderlineCheckBox->Checked);
+	ini->WriteBool("Main Window", "Bold",CheckBoxBold->Checked);
+	ini->WriteBool("Main Window", "Italic",CheckBoxItalic->Checked);
+	ini->WriteString("Main Window", "Font size",FontSizeComboBox->ItemIndex+8);
+
+	if(ini->ReadBool("Main Window", "Underline",0)||ini->ReadBool("Main Window", "Bold",0)||ini->ReadBool("Main Window", "Italic",0)){
+			if(ini->ReadBool("Main Window", "Underline",0)&&ini->ReadBool("Main Window", "Bold",0)&&ini->ReadBool("Main Window", "Italic",0)){
+			MainForm->UsernameLabel->Font->Style = TFontStyles() <<fsUnderline<<fsBold<<fsItalic;
+			MainForm->PasswordLabel->Font->Style = TFontStyles() <<fsUnderline<<fsBold<<fsItalic;
+			MainForm->NoAccountLabel->Font->Style = TFontStyles() <<fsUnderline<<fsBold<<fsItalic;
+			MainForm->RememberMeCheckBox->Font->Style = TFontStyles() <<fsUnderline<<fsBold<<fsItalic;
+
+		}
+		else if(ini->ReadBool("Main Window", "Underline",0)&&ini->ReadBool("Main Window", "Bold",0)){
+			MainForm->UsernameLabel->Font->Style = TFontStyles() <<fsUnderline<<fsBold;
+			MainForm->PasswordLabel->Font->Style = TFontStyles() <<fsUnderline<<fsBold;
+			MainForm->NoAccountLabel->Font->Style = TFontStyles() <<fsUnderline<<fsBold;
+			MainForm->RememberMeCheckBox->Font->Style= TFontStyles() <<fsUnderline<<fsBold;
+		}
+		else if(ini->ReadBool("Main Window", "Underline",0)&&ini->ReadBool("Main Window", "Italic",0)){
+			MainForm->UsernameLabel->Font->Style = TFontStyles() <<fsUnderline<<fsItalic;
+			MainForm->PasswordLabel->Font->Style = TFontStyles() <<fsUnderline<<fsItalic;
+			MainForm->NoAccountLabel->Font->Style = TFontStyles() <<fsUnderline<<fsItalic;
+			MainForm->RememberMeCheckBox->Font->Style = TFontStyles() <<fsUnderline<<fsItalic;
+		}
+		else if(ini->ReadBool("Main Window", "Italic",0)&&ini->ReadBool("Main Window", "Bold",0)){
+			MainForm->UsernameLabel->Font->Style = TFontStyles() <<fsItalic<<fsBold;
+			MainForm->PasswordLabel->Font->Style = TFontStyles() <<fsItalic<<fsBold;
+			MainForm->NoAccountLabel->Font->Style = TFontStyles() <<fsItalic<<fsBold;
+			MainForm->RememberMeCheckBox->Font->Style = TFontStyles() <<fsItalic<<fsBold;
+		}
+		else if(ini->ReadBool("Main Window", "Italic",0)){
+			MainForm->UsernameLabel->Font->Style = TFontStyles() <<fsItalic;
+			MainForm->PasswordLabel->Font->Style = TFontStyles() <<fsItalic;
+			MainForm->NoAccountLabel->Font->Style = TFontStyles() <<fsItalic;
+			MainForm->RememberMeCheckBox->Font->Style = TFontStyles() <<fsItalic;
+		}
+		else if(ini->ReadBool("Main Window", "Bold",0)){
+			MainForm->UsernameLabel->Font->Style = TFontStyles() <<fsBold;
+			MainForm->PasswordLabel->Font->Style = TFontStyles() <<fsBold;
+			MainForm->NoAccountLabel->Font->Style = TFontStyles() <<fsBold;
+			MainForm->RememberMeCheckBox->Font->Style  = TFontStyles() <<fsBold;
+		}
+		else if(ini->ReadBool("Main Window", "Underline",0)){
+			MainForm->UsernameLabel->Font->Style = TFontStyles() <<fsUnderline;
+			MainForm->PasswordLabel->Font->Style = TFontStyles() <<fsUnderline;
+			MainForm->NoAccountLabel->Font->Style = TFontStyles() <<fsUnderline;
+			MainForm->RememberMeCheckBox->Font->Style = TFontStyles() <<fsUnderline;
+		}
+		}
+		else{
+			MainForm->UsernameLabel->Font->Style = TFontStyles();
+			MainForm->PasswordLabel->Font->Style = TFontStyles();
+			MainForm->NoAccountLabel->Font->Style = TFontStyles();
+			MainForm->RememberMeCheckBox->Font->Style = TFontStyles();
+		}
+
+
+		if(FontSizeComboBox->ItemIndex!=-1){
+		MainForm->UsernameLabel->Font->Size=FontSizeComboBox->ItemIndex+8;
+		MainForm->PasswordLabel->Font->Size=FontSizeComboBox->ItemIndex+8;
+		MainForm->NoAccountLabel->Font->Size=FontSizeComboBox->ItemIndex+8;
+		MainForm->RememberMeCheckBox->Font->Size=FontSizeComboBox->ItemIndex+8;
+		}
+
+	delete ini;
+
+
+
+}
+//---------------------------------------------------------------------------

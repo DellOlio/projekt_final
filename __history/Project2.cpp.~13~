@@ -1,0 +1,56 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+#include <tchar.h>
+//---------------------------------------------------------------------------
+USEFORM("Settings.cpp", SettingsForm);
+USEFORM("Schedule.cpp", ScheduleForm);
+USEFORM("Register.cpp", RegisterForm);
+USEFORM("TimeOrganizer.cpp", TimeOrganizerForm);
+USEFORM("MainMenu.cpp", MainMenuForm);
+USEFORM("Main.cpp", MainForm);
+USEFORM("DataModule.cpp", DataModule1); /* TDataModule: File Type */
+USEFORM("BugReport.cpp", BugReportForm);
+USEFORM("QuickMoneyManagment.cpp", QuickMoneyManagmentForm);
+USEFORM("MoneyManagement.cpp", MoneyManagementForm);
+//---------------------------------------------------------------------------
+int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
+{
+
+
+
+	try
+	{
+		Application->Initialize();
+		Application->MainFormOnTaskBar = true;
+		Application->CreateForm(__classid(TMainForm), &MainForm);
+		Application->CreateForm(__classid(TRegisterForm), &RegisterForm);
+		Application->CreateForm(__classid(TSettingsForm), &SettingsForm);
+		Application->CreateForm(__classid(TMainMenuForm), &MainMenuForm);
+		Application->CreateForm(__classid(TTimeOrganizerForm), &TimeOrganizerForm);
+		Application->CreateForm(__classid(TScheduleForm), &ScheduleForm);
+		Application->CreateForm(__classid(TMoneyManagementForm), &MoneyManagementForm);
+		Application->CreateForm(__classid(TDataModule1), &DataModule1);
+		Application->CreateForm(__classid(TQuickMoneyManagmentForm), &QuickMoneyManagmentForm);
+		Application->CreateForm(__classid(TBugReportForm), &BugReportForm);
+		Application->Run();
+	}
+	catch (Exception &exception)
+	{
+		Application->ShowException(&exception);
+	}
+	catch (...)
+	{
+		try
+		{
+			throw Exception("");
+		}
+		catch (Exception &exception)
+		{
+			Application->ShowException(&exception);
+		}
+	}
+	return 0;
+}
+//---------------------------------------------------------------------------

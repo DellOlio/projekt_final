@@ -1,0 +1,51 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#include <System.JSON.hpp>
+#pragma hdrstop
+
+
+#include "Schedule.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TScheduleForm *ScheduleForm;
+//---------------------------------------------------------------------------
+__fastcall TScheduleForm::TScheduleForm(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+
+
+
+//---------------------------------------------------------------------------
+void __fastcall TScheduleForm::LoadJSONButtonClick(TObject *Sender)
+{
+	/*
+	// uèitaj sadržaj datoteke schedule.json u memoriju
+    std::unique_ptr<TStringStream> jsonStream(new TStringStream);
+	jsonStream->LoadFromFile("schedule.json");
+	UnicodeString jsonDoc = jsonStream->DataString;
+
+	// dohvati cijeli JSON
+	TJSONObject* Schedule =(TJSONObject*)TJSONObject::ParseJSONValue(jsonDoc);
+
+
+	// dohvati niz "classes" unutar JSON dokumenta
+	TJSONArray* Classes = (TJSONArray*)TJSONObject::ParseJSONValue(
+				Schedule->GetValue("classes")->ToString());
+
+
+	// proèitaj i ispiši pojedine razrede
+	UnicodeString oneClass;
+	for(int i = 0; i < Classes -> Count ; i++){
+		oneClass = Classes -> Items[i] -> GetValue<UnicodeString>("name") + " "
+			+ Classes -> Items[i] -> GetValue<UnicodeString>("day")+"\n"
+			+ Classes -> Items[i] -> GetValue<UnicodeString>("time") + ", "
+			+ Classes -> Items[i] -> GetValue<UnicodeString>("room");
+		ShowMessage(oneClass);
+	}*/
+
+
+}
+//---------------------------------------------------------------------------

@@ -1,0 +1,764 @@
+object MoneyManagementForm: TMoneyManagementForm
+  Left = 0
+  Top = 0
+  Caption = 'Money management'
+  ClientHeight = 611
+  ClientWidth = 1281
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  TextHeight = 15
+  object Label1: TLabel
+    Left = 16
+    Top = 320
+    Width = 62
+    Height = 15
+    Caption = 'Chose table'
+  end
+  object Label2: TLabel
+    Left = 256
+    Top = 320
+    Width = 90
+    Height = 15
+    Caption = 'Search user by ID'
+  end
+  object Sort: TLabel
+    Left = 632
+    Top = 320
+    Width = 21
+    Height = 15
+    Caption = 'Sort'
+  end
+  object Label3: TLabel
+    Left = 880
+    Top = 256
+    Width = 59
+    Height = 15
+    Caption = 'User image'
+  end
+  object Label4: TLabel
+    Left = 1104
+    Top = 256
+    Width = 55
+    Height = 15
+    Caption = 'User notes'
+  end
+  object DBGrid1: TDBGrid
+    Left = 0
+    Top = 0
+    Width = 1281
+    Height = 233
+    Align = alTop
+    DataSource = DataModule1.KorisnikDataSource
+    TabOrder = 0
+    TitleFont.Charset = DEFAULT_CHARSET
+    TitleFont.Color = clWindowText
+    TitleFont.Height = -12
+    TitleFont.Name = 'Segoe UI'
+    TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'ID'
+        Width = 150
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'OIB'
+        Width = 150
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Ime'
+        Width = 150
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Prezime'
+        Width = 150
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Starost'
+        Width = 150
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'MjestoID'
+        Width = 150
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Bilje'#353'ke'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'Slika'
+        Visible = True
+      end>
+  end
+  object DBNavigator1: TDBNavigator
+    Left = 56
+    Top = 251
+    Width = 702
+    Height = 25
+    DataSource = DataModule1.KorisnikDataSource
+    VisibleButtons = [nbInsert, nbDelete, nbEdit, nbPost, nbCancel, nbRefresh]
+    TabOrder = 1
+    OnClick = DBNavigator1Click
+  end
+  object ComboBox: TComboBox
+    Left = 16
+    Top = 352
+    Width = 161
+    Height = 23
+    TabOrder = 2
+    Text = 'Korisnik'
+    OnChange = ComboBoxChange
+    Items.Strings = (
+      'Korisnik'
+      'Troskovi'
+      'Prihodi'
+      'Mjesta')
+  end
+  object FilterEdit: TEdit
+    Left = 256
+    Top = 352
+    Width = 153
+    Height = 23
+    TabOrder = 3
+  end
+  object SearchButton: TButton
+    Left = 440
+    Top = 351
+    Width = 75
+    Height = 25
+    Caption = 'Search'
+    TabOrder = 4
+    OnClick = SearchButtonClick
+  end
+  object SilaznoButton: TButton
+    Left = 624
+    Top = 351
+    Width = 121
+    Height = 25
+    Caption = 'Sort ascending'
+    TabOrder = 5
+    OnClick = SilaznoButtonClick
+  end
+  object UzlaznoButton: TButton
+    Left = 624
+    Top = 400
+    Width = 121
+    Height = 25
+    Caption = 'Sort descending'
+    TabOrder = 6
+    OnClick = UzlaznoButtonClick
+  end
+  object LoadImageButton: TButton
+    Left = 827
+    Top = 464
+    Width = 75
+    Height = 25
+    Caption = 'Load image'
+    TabOrder = 7
+    OnClick = LoadImageButtonClick
+  end
+  object DeleteImageButton: TButton
+    Left = 922
+    Top = 464
+    Width = 75
+    Height = 25
+    Caption = 'Delete image'
+    TabOrder = 8
+    OnClick = DeleteImageButtonClick
+  end
+  object DBImage1: TDBImage
+    Left = 827
+    Top = 277
+    Width = 170
+    Height = 170
+    DataField = 'Slika'
+    DataSource = DataModule1.KorisnikDataSource
+    TabOrder = 9
+  end
+  object ReportButton: TButton
+    Left = 454
+    Top = 552
+    Width = 155
+    Height = 41
+    Caption = 'Generate report '
+    TabOrder = 10
+    OnClick = ReportButtonClick
+  end
+  object Memo: TDBMemo
+    Left = 1040
+    Top = 277
+    Width = 185
+    Height = 170
+    DataField = 'Bilje'#353'ke'
+    DataSource = DataModule1.KorisnikDataSource
+    TabOrder = 11
+  end
+  object LoadNotesButton: TButton
+    Left = 1040
+    Top = 464
+    Width = 75
+    Height = 25
+    Caption = 'Load notes'
+    TabOrder = 12
+    OnClick = LoadNotesButtonClick
+  end
+  object SaveNotesButton: TButton
+    Left = 1150
+    Top = 464
+    Width = 75
+    Height = 25
+    Caption = 'Save notes'
+    TabOrder = 13
+    OnClick = SaveNotesButtonClick
+  end
+  object OpenDialog: TOpenDialog
+    Left = 896
+    Top = 344
+  end
+  object frxReport: TfrxReport
+    Version = '2022.2.7'
+    DotMatrixReport = False
+    IniFile = '\Software\Fast Reports'
+    PreviewOptions.Buttons = [pbPrint, pbLoad, pbSave, pbExport, pbZoom, pbFind, pbOutline, pbPageSetup, pbTools, pbEdit, pbNavigator, pbExportQuick, pbCopy, pbSelection]
+    PreviewOptions.Zoom = 1.000000000000000000
+    PrintOptions.Printer = 'Default'
+    PrintOptions.PrintOnSheet = 0
+    ReportOptions.CreateDate = 45470.884038923600000000
+    ReportOptions.LastChange = 45470.884038923600000000
+    ScriptLanguage = 'PascalScript'
+    ScriptText.Strings = (
+      'begin'
+      ''
+      'end.')
+    Left = 184
+    Top = 152
+    Datasets = <
+      item
+        DataSet = frxKorisnik
+        DataSetName = 'frxKorisnik'
+      end
+      item
+        DataSet = frxPrihodi
+        DataSetName = 'frxPrihodi'
+      end
+      item
+        DataSet = frxTroskovi
+        DataSetName = 'frxTroskovi'
+      end
+      item
+        DataSet = frxMjesta
+        DataSetName = 'frxMjesta'
+      end>
+    Variables = <>
+    Style = <>
+    object Data: TfrxDataPage
+      Height = 1000.000000000000000000
+      Width = 1000.000000000000000000
+      object Memo8: TfrxMemoView
+        AllowVectorExport = True
+        Left = 176.000000000000000000
+        Top = 104.000000000000000000
+        Width = 80.000000000000000000
+        Height = 16.000000000000000000
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clBlack
+        Font.Height = -13
+        Font.Name = 'Arial'
+        Font.Style = []
+        Frame.Typ = []
+        ParentFont = False
+        Wysiwyg = False
+      end
+    end
+    object Page1: TfrxReportPage
+      PaperWidth = 210.000000000000000000
+      PaperHeight = 297.000000000000000000
+      PaperSize = 9
+      LeftMargin = 10.000000000000000000
+      RightMargin = 10.000000000000000000
+      TopMargin = 10.000000000000000000
+      BottomMargin = 10.000000000000000000
+      Frame.Typ = []
+      MirrorMode = []
+      object ReportTitle1: TfrxReportTitle
+        FillType = ftBrush
+        FillGap.Top = 0
+        FillGap.Left = 0
+        FillGap.Bottom = 0
+        FillGap.Right = 0
+        Frame.Typ = []
+        Height = 41.574830000000000000
+        Top = 18.897650000000000000
+        Width = 718.110700000000000000
+        object Memo1: TfrxMemoView
+          AllowVectorExport = True
+          Top = 3.779530000000000000
+          Width = 718.110700000000000000
+          Height = 26.456710000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -19
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          HAlign = haCenter
+          Memo.UTF8W = (
+            'Izvje'#353'taj prihoda i tro'#353'kova ')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+      end
+      object MasterData1: TfrxMasterData
+        FillType = ftBrush
+        FillGap.Top = 0
+        FillGap.Left = 0
+        FillGap.Bottom = 0
+        FillGap.Right = 0
+        Frame.Typ = []
+        Height = 234.330860000000000000
+        Top = 120.944960000000000000
+        Width = 718.110700000000000000
+        DataSet = frxKorisnik
+        DataSetName = 'frxKorisnik'
+        RowCount = 0
+        object Picture1: TfrxPictureView
+          AllowVectorExport = True
+          Top = 56.692950000000000000
+          Width = 173.858380000000000000
+          Height = 162.519790000000000000
+          DataField = 'Slika'
+          DataSet = frxKorisnik
+          DataSetName = 'frxKorisnik'
+          Frame.Typ = []
+          HightQuality = False
+          Transparent = False
+          TransparentColor = clWhite
+        end
+        object Memo2: TfrxMemoView
+          AllowVectorExport = True
+          Left = 192.756030000000000000
+          Top = 64.252010000000000000
+          Width = 71.811070000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            'Ime:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo3: TfrxMemoView
+          AllowVectorExport = True
+          Left = 192.756030000000000000
+          Top = 90.708720000000000000
+          Width = 94.488250000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            'Prezime:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo4: TfrxMemoView
+          AllowVectorExport = True
+          Left = 192.756030000000000000
+          Top = 120.944960000000000000
+          Width = 94.488250000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            'OIB:')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object frxKorisnikIme: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 302.362400000000000000
+          Top = 64.252010000000000000
+          Width = 204.094620000000000000
+          Height = 18.897650000000000000
+          DataSet = frxKorisnik
+          DataSetName = 'frxKorisnik'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[frxKorisnik."Ime"]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object frxKorisnikPrezime: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 302.362400000000000000
+          Top = 90.708720000000000000
+          Width = 204.094620000000000000
+          Height = 18.897650000000000000
+          DataField = 'Prezime'
+          DataSet = frxKorisnik
+          DataSetName = 'frxKorisnik'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[frxKorisnik."Prezime"]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object frxKorisnikOIB: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 302.362400000000000000
+          Top = 120.944960000000000000
+          Width = 204.094620000000000000
+          Height = 18.897650000000000000
+          DataField = 'OIB'
+          DataSet = frxKorisnik
+          DataSetName = 'frxKorisnik'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[frxKorisnik."OIB"]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+        object Memo6: TfrxMemoView
+          AllowVectorExport = True
+          Top = 11.338590000000000000
+          Width = 94.488250000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -16
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            'Korisnik')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+      end
+      object ReportSummary1: TfrxReportSummary
+        FillType = ftBrush
+        FillGap.Top = 0
+        FillGap.Left = 0
+        FillGap.Bottom = 0
+        FillGap.Right = 0
+        Frame.Typ = []
+        Height = 102.047310000000000000
+        Top = 612.283860000000000000
+        Width = 718.110700000000000000
+        object Memo9: TfrxMemoView
+          AllowVectorExport = True
+          Left = 529.134200000000000000
+          Top = 71.811070000000000000
+          Width = 188.976500000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = []
+          Frame.Typ = []
+          Memo.UTF8W = (
+            'Datum izvje'#353'taja: [Date]')
+          ParentFont = False
+          VAlign = vaCenter
+        end
+      end
+      object DetailData1: TfrxDetailData
+        FillType = ftBrush
+        FillGap.Top = 0
+        FillGap.Left = 0
+        FillGap.Bottom = 0
+        FillGap.Right = 0
+        Frame.Typ = []
+        Height = 26.456710000000000000
+        Top = 377.953000000000000000
+        Width = 718.110700000000000000
+        DataSet = frxPrihodi
+        DataSetName = 'frxPrihodi'
+        RowCount = 0
+        object Memo7: TfrxMemoView
+          AllowVectorExport = True
+          Top = 3.779530000000000000
+          Width = 94.488250000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -16
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            'Prihodi:')
+          ParentFont = False
+        end
+      end
+      object DetailData2: TfrxDetailData
+        FillType = ftBrush
+        FillGap.Top = 0
+        FillGap.Left = 0
+        FillGap.Bottom = 0
+        FillGap.Right = 0
+        Frame.Typ = []
+        Height = 26.456710000000000000
+        Top = 480.000310000000000000
+        Width = 718.110700000000000000
+        DataSet = frxTroskovi
+        DataSetName = 'frxTroskovi'
+        RowCount = 0
+        object Memo11: TfrxMemoView
+          AllowVectorExport = True
+          Top = 3.779530000000000000
+          Width = 94.488250000000000000
+          Height = 18.897650000000000000
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -16
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Frame.Typ = []
+          Memo.UTF8W = (
+            'Tro'#353'kovi:')
+          ParentFont = False
+        end
+      end
+      object SubdetailData1: TfrxSubdetailData
+        FillType = ftBrush
+        FillGap.Top = 0
+        FillGap.Left = 0
+        FillGap.Bottom = 0
+        FillGap.Right = 0
+        Frame.Typ = []
+        Height = 30.236240000000000000
+        Top = 427.086890000000000000
+        Width = 718.110700000000000000
+        DataSet = frxPrihodi
+        DataSetName = 'frxPrihodi'
+        RowCount = 0
+        object frxPrihodiVrsta: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Top = 3.779530000000000000
+          Width = 136.063080000000000000
+          Height = 18.897650000000000000
+          DataField = 'Vrsta'
+          DataSet = frxPrihodi
+          DataSetName = 'frxPrihodi'
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[frxPrihodi."Vrsta"]')
+        end
+        object frxPrihodiIznosEUR: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 143.622140000000000000
+          Top = 3.779530000000000000
+          Width = 79.370130000000000000
+          Height = 18.897650000000000000
+          DataSet = frxPrihodi
+          DataSetName = 'frxPrihodi'
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[frxPrihodi."IznosEUR"] '#8364)
+        end
+        object frxPrihodiDatum: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 230.551330000000000000
+          Top = 3.779530000000000000
+          Width = 143.622140000000000000
+          Height = 18.897650000000000000
+          DataField = 'Datum'
+          DataSet = frxPrihodi
+          DataSetName = 'frxPrihodi'
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[frxPrihodi."Datum"]')
+        end
+      end
+      object SubdetailData2: TfrxSubdetailData
+        FillType = ftBrush
+        FillGap.Top = 0
+        FillGap.Left = 0
+        FillGap.Bottom = 0
+        FillGap.Right = 0
+        Frame.Typ = []
+        Height = 22.677180000000000000
+        Top = 529.134200000000000000
+        Width = 718.110700000000000000
+        DataSet = frxTroskovi
+        DataSetName = 'frxTroskovi'
+        RowCount = 0
+        object Memo12: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Width = 136.063080000000000000
+          Height = 18.897650000000000000
+          DataSet = frxPrihodi
+          DataSetName = 'frxPrihodi'
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[frxTroskovi."Opis"]')
+        end
+        object Memo13: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 143.622140000000000000
+          Width = 79.370130000000000000
+          Height = 18.897650000000000000
+          DataSet = frxPrihodi
+          DataSetName = 'frxPrihodi'
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[frxTroskovi."IznosEUR"] '#8364)
+        end
+        object Memo14: TfrxMemoView
+          IndexTag = 1
+          AllowVectorExport = True
+          Left = 230.551330000000000000
+          Width = 143.622140000000000000
+          Height = 18.897650000000000000
+          DataSet = frxPrihodi
+          DataSetName = 'frxPrihodi'
+          Frame.Typ = []
+          Memo.UTF8W = (
+            '[frxTroskovi."Datum"]')
+        end
+      end
+    end
+  end
+  object frxJPEGExport1: TfrxJPEGExport
+    UseFileCache = True
+    ShowProgress = True
+    OverwritePrompt = False
+    DataOnly = False
+    Left = 568
+    Top = 160
+  end
+  object frxPDFExport1: TfrxPDFExport
+    UseFileCache = True
+    ShowProgress = True
+    OverwritePrompt = False
+    DataOnly = False
+    EmbedFontsIfProtected = False
+    InteractiveFormsFontSubset = 'A-Z,a-z,0-9,#43-#47 '
+    OpenAfterExport = False
+    PrintOptimized = False
+    Outline = False
+    Background = False
+    HTMLTags = True
+    Quality = 95
+    Author = 'FastReport'
+    Subject = 'FastReport PDF export'
+    Creator = 'FastReport'
+    ProtectionFlags = [ePrint, eModify, eCopy, eAnnot]
+    HideToolbar = False
+    HideMenubar = False
+    HideWindowUI = False
+    FitWindow = False
+    CenterWindow = False
+    PrintScaling = False
+    PdfA = False
+    PDFStandard = psNone
+    PDFVersion = pv17
+    Left = 656
+    Top = 160
+  end
+  object frxPNGExport1: TfrxPNGExport
+    UseFileCache = True
+    ShowProgress = True
+    OverwritePrompt = False
+    DataOnly = False
+    Left = 720
+    Top = 160
+  end
+  object frxKorisnik: TfrxDBDataset
+    UserName = 'frxKorisnik'
+    CloseDataSource = False
+    DataSet = DataModule1.FRKorisnikTable
+    BCDToCurrency = False
+    DataSetOptions = []
+    Left = 264
+    Top = 152
+  end
+  object frxPrihodi: TfrxDBDataset
+    UserName = 'frxPrihodi'
+    CloseDataSource = False
+    DataSet = DataModule1.FRPrihodiTable
+    BCDToCurrency = False
+    DataSetOptions = []
+    Left = 328
+    Top = 152
+  end
+  object frxTroskovi: TfrxDBDataset
+    UserName = 'frxTroskovi'
+    CloseDataSource = False
+    DataSet = DataModule1.FRTroskoviTable
+    BCDToCurrency = False
+    DataSetOptions = []
+    Left = 392
+    Top = 152
+  end
+  object frxMjesta: TfrxDBDataset
+    UserName = 'frxMjesta'
+    CloseDataSource = False
+    DataSet = DataModule1.FrMjestaTable
+    BCDToCurrency = False
+    DataSetOptions = []
+    Left = 456
+    Top = 152
+  end
+  object OpenDialogText: TOpenDialog
+    Left = 1120
+    Top = 304
+  end
+  object SaveDialog1: TSaveDialog
+    Left = 1120
+    Top = 384
+  end
+end

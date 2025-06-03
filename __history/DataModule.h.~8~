@@ -1,0 +1,55 @@
+//---------------------------------------------------------------------------
+
+#ifndef DataModuleH
+#define DataModuleH
+//---------------------------------------------------------------------------
+#include <System.Classes.hpp>
+#include <Data.DB.hpp>
+#include <Data.Win.ADODB.hpp>
+//---------------------------------------------------------------------------
+class TDataModule1 : public TDataModule
+{
+__published:	// IDE-managed Components
+	TADOConnection *Connection;
+	TADOTable *KorisnikTable;
+	TDataSource *KorisnikDataSource;
+	TDataSource *PrihodiDataSource;
+	TADOTable *PrihodiTable;
+	TADOTable *TroskoviTable;
+	TADOTable *MjestaTable;
+	TDataSource *TroskoviDataSource;
+	TDataSource *MjestaDataSource;
+	TAutoIncField *PrihodiTableID;
+	TWideStringField *PrihodiTableVrsta;
+	TDateTimeField *PrihodiTableDatum;
+	TIntegerField *PrihodiTableKorisnikID;
+	TIntegerField *PrihodiTableIznosEUR;
+	TAutoIncField *TroskoviTableID;
+	TWideStringField *TroskoviTableOpis;
+	TDateTimeField *TroskoviTableDatum;
+	TIntegerField *TroskoviTableKorisnikID;
+	TIntegerField *TroskoviTableIznosEUR;
+	TAutoIncField *KorisnikTableID;
+	TWideStringField *KorisnikTableOIB;
+	TWideStringField *KorisnikTableIme;
+	TWideStringField *KorisnikTablePrezime;
+	TIntegerField *KorisnikTableStarost;
+	TIntegerField *KorisnikTableMjestoID;
+	TAutoIncField *MjestaTableID;
+	TWideStringField *MjestaTableNaziv;
+	TWideStringField *MjestaTableZupanija;
+	TStringField *PrihodiTableKorisnikPrezime;
+	TStringField *TroskoviTableKorisnikPrezime;
+	TIntegerField *PrihodiTableIznosKN;
+	TIntegerField *TroskoviTableIznosKN;
+	TBlobField *KorisnikTableSlika;
+	void __fastcall PrihodiTableCalcFields(TDataSet *DataSet);
+	void __fastcall TroskoviTableCalcFields(TDataSet *DataSet);
+private:	// User declarations
+public:		// User declarations
+	__fastcall TDataModule1(TComponent* Owner);
+};
+//---------------------------------------------------------------------------
+extern PACKAGE TDataModule1 *DataModule1;
+//---------------------------------------------------------------------------
+#endif

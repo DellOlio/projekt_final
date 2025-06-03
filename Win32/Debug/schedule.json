@@ -1,0 +1,28 @@
+{
+  "classes": [
+    {
+      "name": "Baze podataka",
+      "day": "Srijeda",
+      "time": "18:30",
+      "room": "AuditLab"
+    },
+    {
+      "name": "Programiranje",
+      "day": "Utorak",
+      "time": "15:00",
+      "room": "AllPCLab"
+    },
+    {
+      "name": "Matematika 2",
+      "day": "Petak",
+      "time": "12:00",
+      "room": "SSpace"
+    },
+    {
+      "name": "Mreže raèunala",
+      "day": "Ponedjeljak",
+      "time": "15:30",
+      "room": "CCNA"
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+#include <tchar.h>
+//---------------------------------------------------------------------------
+USEFORM("Settings.cpp", SettingsForm);
+USEFORM("TimeOrganizer.cpp", TimeOrganizerForm);
+USEFORM("Main.cpp", MainForm);
+USEFORM("MainMenu.cpp", MainMenuForm);
+USEFORM("Register.cpp", RegisterForm);
+//---------------------------------------------------------------------------
+int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
+{
+	try
+	{
+		Application->Initialize();
+		Application->MainFormOnTaskBar = true;
+		Application->CreateForm(__classid(TMainForm), &MainForm);
+		Application->CreateForm(__classid(TRegisterForm), &RegisterForm);
+		Application->CreateForm(__classid(TSettingsForm), &SettingsForm);
+		Application->CreateForm(__classid(TMainMenuForm), &MainMenuForm);
+		Application->CreateForm(__classid(TTimeOrganizerForm), &TimeOrganizerForm);
+		Application->Run();
+	}
+	catch (Exception &exception)
+	{
+		Application->ShowException(&exception);
+	}
+	catch (...)
+	{
+		try
+		{
+			throw Exception("");
+		}
+		catch (Exception &exception)
+		{
+			Application->ShowException(&exception);
+		}
+	}
+	return 0;
+}
+//---------------------------------------------------------------------------

@@ -1,0 +1,240 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#include <System.JSON.hpp>
+#include <System.JSON.readers.hpp>
+#pragma hdrstop
+
+
+#include "Schedule.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TScheduleForm *ScheduleForm;
+//---------------------------------------------------------------------------
+__fastcall TScheduleForm::TScheduleForm(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+
+
+
+//---------------------------------------------------------------------------
+void __fastcall TScheduleForm::LoadJSONButtonClick(TObject *Sender)
+{
+
+	// uèitaj sadržaj datoteke schedule.json u memoriju
+	std::unique_ptr<TStringStream> jsonStream(new TStringStream);
+	jsonStream->LoadFromFile("schedule.json");
+	UnicodeString jsonDoc = jsonStream->DataString;
+
+	// dohvati cijeli JSON
+	TJSONObject* Schedule =(TJSONObject*)TJSONObject::ParseJSONValue(jsonDoc);
+
+
+	// dohvati niz "classes" unutar JSON dokumenta
+	TJSONArray* Classes = (TJSONArray*)TJSONObject::ParseJSONValue(
+				Schedule->GetValue("classes")->ToString());
+
+	ListView1->Items->Clear();
+	for(int i = 0; i < Classes -> Count ; i++){
+		TListItem* item = ListView1->Items->Add();
+		TJSONObject* cls = (TJSONObject*) Classes -> Items[i];
+		item->Caption = cls->GetValue("name")->Value();
+		item->SubItems->Add(cls->GetValue("day")->Value());
+		item->SubItems->Add(cls->GetValue("time")->Value());
+		item->SubItems->Add(cls->GetValue("room")->Value());
+
+	}
+
+}
+//---------------------------------------------------------------------------
+void __fastcall TScheduleForm::AddClassButtonClick(TObject *Sender)
+{
+    if (NameEdit->Text.IsEmpty() || DayEdit->Text.IsEmpty() || TimeEdit->Text.IsEmpty() || RoomEdit->Text.IsEmpty()) {
+        ShowMessage("All fields must have values.");
+        return;
+    }
+
+	std::unique_ptr<TStringStream> jsonStream(new TStringStream);
+	jsonStream->LoadFromFile("schedule.json");
+	UnicodeString jsonDoc = jsonStream->DataString;
+
+    TJSONObject* Schedule =(TJSONObject*)TJSONObject::ParseJSONValue(jsonDoc);
+
+	TJSONArray* Classes = (TJSONArray*)TJSONObject::ParseJSONValue(
+				Schedule->GetValue("classes")->ToString());
+
+
+
+    TJSONObject* newClass = new TJSONObject();
+	newClass->AddPair("name", NameEdit->Text);
+    newClass->AddPair("day", DayEdit->Text);
+    newClass->AddPair("time", TimeEdit->Text);
+    newClass->AddPair("room", RoomEdit->Text);
+
+	Classes->AddElement(newClass);
+
+
+	NameEdit->Text = "";
+    DayEdit->Text = "";
+    TimeEdit->Text = "";
+    RoomEdit->Text = "";
+
+
+}
+//---------------------------------------------------------------------------
+
+
+
+/*
+
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#include <System.JSON.hpp> // !
+#include <memory>
+#pragma hdrstop
+
+#include "Unit1.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TForm1 *Form1;
+//---------------------------------------------------------------------------
+__fastcall TForm1::TForm1(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::BLoadFromFileClick(TObject *Sender)
+{
+	// load json file
+	std::unique_ptr<TStringStream> jsonStream(new TStringStream);
+	jsonStream->LoadFromFile("addressBook.json");
+
+	// create JSON object that represents entire JSON file
+	TJSONObject* jsonFile = (TJSONObject*)TJSONObject::ParseJSONValue(jsonStream->DataString);
+
+	// create JSON object that represent array from inside addresBook object
+	TJSONArray* contactsArray = (TJSONArray*)TJSONObject::ParseJSONValue(jsonFile->GetValue("addressBook")->ToString());
+
+	// read and output each address book contact
+	ListView1->Items->Clear();
+	for (int i = 0; i < contactsArray->Count; i++) {
+		// read contact info
+		String name = contactsArray->Items[i]->GetValue<UnicodeString>("name");
+		String surname = contactsArray->Items[i]->GetValue<UnicodeString>("surname");
+		String street =	contactsArray->Items[i]->GetValue<UnicodeString>("street");
+		String houseNumber = contactsArray->Items[i]->GetValue<int>("houseNumber");
+		String city = contactsArray->Items[i]->GetValue<UnicodeString>("city");
+		String phoneNumber = contactsArray->Items[i]->GetValue<UnicodeString>("phoneNumber");
+
+		// show contact info inside ListView component
+		ListView1->Items->Add();
+		ListView1->Items->Item[i]->Caption = name;
+		ListView1->Items->Item[i]->SubItems->Add(surname);
+		ListView1->Items->Item[i]->SubItems->Add(street);
+		ListView1->Items->Item[i]->SubItems->Add(houseNumber);
+		ListView1->Items->Item[i]->SubItems->Add(city);
+		ListView1->Items->Item[i]->SubItems->Add(phoneNumber);
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::BAddAsNewClick(TObject *Sender)
+{
+	ListView1->Items->Add();
+	int lastIndex = ListView1->Items->Count-1;
+	ListView1->Items->Item[lastIndex]->Caption = EName->Text;
+	ListView1->Items->Item[lastIndex]->SubItems->Add(ESurname->Text);
+	ListView1->Items->Item[lastIndex]->SubItems->Add(EStreet->Text);
+	ListView1->Items->Item[lastIndex]->SubItems->Add(EHouseNumber->Text);
+	ListView1->Items->Item[lastIndex]->SubItems->Add(ECity->Text);
+	ListView1->Items->Item[lastIndex]->SubItems->Add(EPhoneNumber->Text);
+}
+//---------------------------------------------------------------------------
+void __fastcall TForm1::BDeleteClick(TObject *Sender)
+{
+	ListView1->DeleteSelected();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::BUpdateClick(TObject *Sender)
+{
+	if(ListView1->ItemIndex == -1)
+		return;
+
+	ListView1->Items->Item[ListView1->ItemIndex]->Caption = EName->Text;
+	ListView1->Items->Item[ListView1->ItemIndex]->SubItems->Strings[0] = ESurname->Text;
+	ListView1->Items->Item[ListView1->ItemIndex]->SubItems->Strings[1] = EStreet->Text;
+	ListView1->Items->Item[ListView1->ItemIndex]->SubItems->Strings[2] = EHouseNumber->Text;
+	ListView1->Items->Item[ListView1->ItemIndex]->SubItems->Strings[3] = ECity->Text;
+	ListView1->Items->Item[ListView1->ItemIndex]->SubItems->Strings[4] = EPhoneNumber->Text;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TForm1::GSaveToFileClick(TObject *Sender)
+{
+//	std::unique_ptr<TStringBuilder> stringBuilder(new TStringBuilder);
+//	std::unique_ptr<TStringWriter> stringWriter (new TStringWriter(stringBuilder.get()));
+//	std::unique_ptr<TJsonTextWriter> stringWritter (new TJsonTextWriter(stringWriter.get()));
+//	stringWritter->Formatting = TJsonFormatting::Indented;
+//	std::unique_ptr<TJSONObjectBuilder> Builder(new TJSONObjectBuilder(stringWritter.get()));
+//
+//	Builder->BeginObject()
+//		->BeginArray("addressBook")
+//			->BeginObject()
+//				->Add("name", String("John"))
+//				->Add("surname", String("Doe"))
+//				->Add("street", String("1st Street"))
+//				->Add("houseNumber", 15)
+//				->Add("city", String("Paris"))
+//				->Add("phoneNumber", String("+123456789"))
+//			->EndObject()
+//			->BeginObject()
+//				->Add("name", String("Jane"))
+//				->Add("surname", String("Doe"))
+//				->Add("street", String("2st Street"))
+//				->Add("houseNumber", 18)
+//				->Add("city", String("London"))
+//				->Add("phoneNumber", String("+234567890"))
+//			->EndObject()
+//		->EndArray()
+//	->EndObject();
+//
+//	ShowMessage(stringBuilder->ToString());
+
+	String jsonDoc;
+	jsonDoc = "{";
+		jsonDoc += "\"addressBook\":";
+		jsonDoc += "[";
+		// add existing contacts...
+		for(int i = 0; i < ListView1->Items->Count; i++){
+			jsonDoc +=
+			"{"
+				"\"name\":\"" + ListView1->Items->Item[i]->Caption + "\"," +
+				"\"surname\":\"" + ListView1->Items->Item[i]->SubItems->Strings[0] + "\"," +
+				"\"street\":\"" + ListView1->Items->Item[i]->SubItems->Strings[1] + "\"," +
+				"\"houseNumber\":" + ListView1->Items->Item[i]->SubItems->Strings[2] + "," +
+				"\"city\":\"" + ListView1->Items->Item[i]->SubItems->Strings[3] + "\"," +
+				"\"phoneNumber\":\"" + ListView1->Items->Item[i]->SubItems->Strings[4] + "\"" +
+			"}";
+			jsonDoc += (i+1 != ListView1->Items->Count) ? "," : "";
+		}
+		jsonDoc += "]";
+	jsonDoc += "}";
+
+	//Application->MessageBoxW(jsonDoc.w_str(), L"", 0);
+	// format json document (line breaks, indents..)
+	jsonDoc = ((TJSONObject*)TJSONObject::ParseJSONValue(jsonDoc))->Format(2);
+
+	std::unique_ptr<TStringStream> ss(new TStringStream);
+	ss->WriteString(jsonDoc);
+	ss->SaveToFile("addressBook.json");
+}
+//---------------------------------------------------------------------------
+
+
+
+*/
+

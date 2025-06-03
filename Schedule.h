@@ -1,0 +1,39 @@
+//---------------------------------------------------------------------------
+
+#ifndef ScheduleH
+#define ScheduleH
+//---------------------------------------------------------------------------
+#include <System.Classes.hpp>
+#include <Vcl.Controls.hpp>
+#include <Vcl.StdCtrls.hpp>
+#include <Vcl.Forms.hpp>
+#include <Vcl.ComCtrls.hpp>
+//---------------------------------------------------------------------------
+class TScheduleForm : public TForm
+{
+__published:	// IDE-managed Components
+	TListView *ListView1;
+	TButton *LoadJSONButton;
+	TLabel *Label1;
+	TEdit *NameEdit;
+	TLabel *Label2;
+	TEdit *DayEdit;
+	TEdit *TimeEdit;
+	TLabel *Label3;
+	TEdit *RoomEdit;
+	TLabel *Label4;
+	TButton *AddClassButton;
+	TButton *DeleteClassButton;
+	TButton *EditClassButton;
+	void __fastcall LoadJSONButtonClick(TObject *Sender);
+	void __fastcall AddClassButtonClick(TObject *Sender);
+	void __fastcall DeleteClassButtonClick(TObject *Sender);
+	void __fastcall EditClassButtonClick(TObject *Sender);
+private:	// User declarations
+public:		// User declarations
+	__fastcall TScheduleForm(TComponent* Owner);
+};
+//---------------------------------------------------------------------------
+extern PACKAGE TScheduleForm *ScheduleForm;
+//---------------------------------------------------------------------------
+#endif

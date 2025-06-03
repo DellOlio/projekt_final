@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{567EC5FE-CDEE-470A-884B-89A476C5B451}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Project2.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Win32\Debug\consoleapp.cbproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Project2">
+        <MSBuild Projects="Project2.cbproj"/>
+    </Target>
+    <Target Name="Project2:Clean">
+        <MSBuild Projects="Project2.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Project2:Make">
+        <MSBuild Projects="Project2.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="consoleapp">
+        <MSBuild Projects="Win32\Debug\consoleapp.cbproj"/>
+    </Target>
+    <Target Name="consoleapp:Clean">
+        <MSBuild Projects="Win32\Debug\consoleapp.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="consoleapp:Make">
+        <MSBuild Projects="Win32\Debug\consoleapp.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Project2;consoleapp"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Project2:Clean;consoleapp:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Project2:Make;consoleapp:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

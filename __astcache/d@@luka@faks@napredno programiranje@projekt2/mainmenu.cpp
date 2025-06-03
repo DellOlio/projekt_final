@@ -1,0 +1,92 @@
+﻿//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "MainMenu.h"
+#include "TimeOrganizer.h"
+#include "Schedule.h"
+#include "MoneyManagement.h"
+#include "QuickMoneyManagment.h"
+#include "BugReport.h"
+#include "Main.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TMainMenuForm *MainMenuForm;
+//---------------------------------------------------------------------------
+__fastcall TMainMenuForm::TMainMenuForm(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainMenuForm::TimeOrganizerClick(TObject *Sender)
+{
+	TimeOrganizerForm->Show();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainMenuForm::ScheduleButtonClick(TObject *Sender)
+{
+	ScheduleForm ->Show();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainMenuForm::MoneyButtonClick(TObject *Sender)
+{
+	 MoneyManagementForm ->Show();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainMenuForm::QuickMoneyManagmentBtnClick(TObject *Sender)
+{
+    QuickMoneyManagmentForm->Show();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainMenuForm::BugReportBtnClick(TObject *Sender)
+{
+	STARTUPINFO startInfo;
+	PROCESS_INFORMATION processInfo;
+	char CommandLine[255] = "consoleapp.exe";
+	HANDLE mp;
+	GetStartupInfo(&startInfo);
+	if(!CreateProcess(NULL, UnicodeString(CommandLine).w_str(),NULL,NULL,0,0,NULL,NULL,&startInfo,&processInfo)){
+		ShowMessage("process failed");
+		return;
+
+	}
+	WaitForSingleObject(processInfo.hProcess, INFINITE);
+	unsigned long returnValue;
+	GetExitCodeProcess(processInfo.hProcess,&returnValue);
+	if(returnValue == 1||returnValue == 2||returnValue == 12||returnValue == 123){
+		BugReportForm->Show();
+		this->Close();
+	}
+	else{
+		MainForm->Close();
+    }
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainMenuForm::EngBtnClick(TObject *Sender)
+{
+TimeOrganizer->Caption = "Time Organizer";
+ScheduleButton->Caption = "School schedule";
+MoneyButton->Caption = "Money management";
+QuickMoneyManagmentBtn->Caption = "Quick MM";
+BugReportBtn->Caption = "Report a bug";
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainMenuForm::HrBtnClick(TObject *Sender)
+{
+TimeOrganizer->Caption = "Organizator vremena";
+ScheduleButton->Caption = "Raspored";
+MoneyButton->Caption = "Upravljanje financijama";
+QuickMoneyManagmentBtn->Caption = "Brzo UF";
+BugReportBtn->Caption = "Prijavi bug";
+}
+//---------------------------------------------------------------------------
+

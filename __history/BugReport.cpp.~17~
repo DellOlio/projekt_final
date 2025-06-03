@@ -1,0 +1,149 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+#include <memory>
+#include <vector>
+
+#include "BugReport.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TBugReportForm *BugReportForm;
+//---------------------------------------------------------------------------
+class MyFileFormat{
+
+
+	float version;
+public:
+	wchar_t name[15];
+	MyFileFormat(){
+		wcsncpy(name, L"MyFileFormat", 15);
+        version =1.0;
+
+
+	}
+	void setVersion(float _version){
+		version=_version;
+	}
+	float getVersion(){
+		return version;
+	}
+
+
+};
+
+class Bug{
+public:
+	char description[255],form[25];
+
+	Bug()=default;
+	Bug(char* _form,char* _description){
+
+	String(strncpy(form,_form,25));
+	strncpy(description,_description,255);
+
+	}
+
+
+};
+
+
+
+__fastcall TBugReportForm::TBugReportForm(TComponent* Owner)
+	: TForm(Owner)
+{
+
+}
+char* UnicodeStringToCharArray(const UnicodeString& us, char* buffer, int bufferSize) {
+    WideString ws(us);
+    int len = ws.Length();
+    if (len >= bufferSize) {
+        len = bufferSize - 1;
+    }
+    wcstombs(buffer, ws.c_bstr(), len);
+    buffer[len] = '\0';
+    return buffer;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TBugReportForm::SaveButtonClick(TObject *Sender)
+{
+//	char ch[255] = FormEdit->Text.c_str();
+//	Bug bug(String(FormEdit->Text),"ide gas");
+
+	String formStr = String(FormEdit->Text);
+	String descriptionStr = String(DescriptionEdit->Text);
+	// Buffers to hold the converted char* strings
+	char formChar[25];
+	char descriptionChar[255];
+	// Convert UnicodeString to char*
+	UnicodeStringToCharArray(formStr, formChar, sizeof(formChar));
+	UnicodeStringToCharArray(descriptionStr, descriptionChar, sizeof(descriptionChar));
+
+	Bug bug(formChar,descriptionChar);
+
+	MyFileFormat Header;
+	std::unique_ptr<TFileStream> bugStream(new TFileStream("bugs.mff",fmCreate));
+	bugStream->Write(&Header,sizeof(MyFileFormat));
+
+
+	bugStream->Write(&bug,sizeof(Bug));
+
+
+
+}
+//---------------------------------------------------------------------------
+void __fastcall TBugReportForm::LoadButtonClick(TObject *Sender)
+{
+
+	MyFileFormat Header;
+
+
+
+	std::unique_ptr<TMemoryStream> bugStream(new TMemoryStream);
+	bugStream->LoadFromFile("bugs.mff");
+
+
+	bugStream->Read(&Header,sizeof(MyFileFormat));
+
+	if(String(Header.name)!="MyFileFormat" ||Header.getVersion() !=1.0){
+		ShowMessage(Header.getVersion());
+		return ;
+	}
+
+
+
+	Bug tmp;
+	int bugsCount = (bugStream->Size - sizeof(Header)) / sizeof(Bug);
+
+	for(int i = 0; i<bugsCount;i++){
+		UnicodeString bug;
+		bugStream->Read(&tmp,sizeof(Bug));
+		bug += String(tmp.form)+" ";
+		bug += String(tmp.description);
+		ShowMessage(bug);
+
+	}
+
+}
+//---------------------------------------------------------------------------
+void __fastcall TBugReportForm::HrBtnClick(TObject *Sender)
+{
+formPlaceLabel->Capiton = "Dijalog";
+DescriptionLabel->Capiton = "Opis";
+SaveButton->Capiton = "Spremi";
+LoadButton->Capiton="Ucitaj";
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TBugReportForm::ENGBtnClick(TObject *Sender)
+{
+
+formPlaceLabel->Capiton = "Form";
+DescriptionLabel->Capiton = "Description";
+SaveButton->Capiton = "Save";
+LoadButton->Capiton="Load";
+}
+//---------------------------------------------------------------------------
+

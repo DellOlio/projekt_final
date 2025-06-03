@@ -1,0 +1,178 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+
+#include "MoneyManagement.h"
+#include "DataModule.h"
+#include <pngimage.hpp>
+#include <jpeg.hpp>
+#include <memory>
+
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma link "frxClass"
+#pragma link "frxDBSet"
+#pragma link "frxExportBaseDialog"
+#pragma link "frxExportImage"
+#pragma link "frxExportPDF"
+#pragma link "frxClass"
+#pragma resource "*.dfm"
+TMoneyManagementForm *MoneyManagementForm;
+//---------------------------------------------------------------------------
+__fastcall TMoneyManagementForm::TMoneyManagementForm(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TMoneyManagementForm::ComboBoxChange(TObject *Sender)
+{
+
+	DBGrid1->Columns->Clear();
+
+	// Change the DataSource based on the ComboBox selection
+	if (ComboBox->Text == "Korisnik")
+    {
+        DBGrid1->DataSource = DataModule1->KorisnikDataSource;
+    }
+	else if (ComboBox->Text == "Prihodi")
+    {
+        DBGrid1->DataSource = DataModule1->PrihodiDataSource;
+    }
+	else if (ComboBox->Text == "Troskovi")
+    {
+        DBGrid1->DataSource = DataModule1->TroskoviDataSource;
+    }
+	else if (ComboBox->Text == "Mjesta")
+    {
+        DBGrid1->DataSource = DataModule1->MjestaDataSource;
+	}
+
+
+    for (int i = 0; i < DBGrid1->Columns->Count; i++)
+    {
+		DBGrid1->Columns->Items[i]->Width = 150;
+	}
+
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TMoneyManagementForm::SearchButtonClick(TObject *Sender)
+{
+
+	DataModule1->PrihodiTable->Filtered = false;
+	DataModule1->TroskoviTable->Filtered = false;
+
+	if (FilterEdit->Text == "") {
+		DataModule1->PrihodiTable->Filtered = false;
+		DataModule1->TroskoviTable->Filtered = false;
+	}
+
+	else {
+		 DataModule1->PrihodiTable->Filter = "KorisnikID LIKE " + QuotedStr(FilterEdit->Text);
+		DataModule1->TroskoviTable->Filter = "KorisnikID LIKE " + QuotedStr(FilterEdit->Text);
+
+		DataModule1->TroskoviTable->Filtered = true;
+		DataModule1->PrihodiTable->Filtered = true;
+
+	}
+
+//	DataModule1->KorisnikTable->Filtered = false;
+//
+//    if (FilterEdit->Text == "") {
+//		DataModule1->KorisnikTable->Filtered = false;
+//
+//	}
+//
+//    else {
+//		DataModule1->KorisnikTable->Filter = "ID LIKE " + QuotedStr(FilterEdit->Text);
+//
+//		DataModule1->KorisnikTable->Filtered = true;
+//
+//	}
+
+}
+//---------------------------------------------------------------------------
+
+
+
+void __fastcall TMoneyManagementForm::SilaznoButtonClick(TObject *Sender)
+{
+	 // silazno po iznosu
+	DataModule1->PrihodiTable->IndexFieldNames = "IznosEUR DESC";
+	DataModule1->TroskoviTable->IndexFieldNames = "IznosEUR DESC";
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMoneyManagementForm::UzlaznoButtonClick(TObject *Sender)
+{
+         // uzlazno po iznosu
+	DataModule1->PrihodiTable->IndexFieldNames = "IznosEUR";
+	DataModule1->TroskoviTable->IndexFieldNames = "IznosEUR";
+}
+//---------------------------------------------------------------------------
+
+
+
+
+
+
+//---------------------------------------------------------------------------
+void __fastcall TMoneyManagementForm::DBNavigator1Click(TObject *Sender, TNavigateBtn Button)
+
+{
+       if (ComboBox->Text == "Korisnik")
+	{
+		DBNavigator1->DataSource = DataModule1->KorisnikDataSource;
+	}
+	else if (ComboBox->Text == "Prihodi")
+	{
+		DBNavigator1->DataSource = DataModule1->PrihodiDataSource;
+	}
+	else if (ComboBox->Text == "Troskovi")
+	{
+		DBNavigator1->DataSource = DataModule1->TroskoviDataSource;
+	}
+	else if (ComboBox->Text == "Mjesta")
+	{
+		DBNavigator1->DataSource = DataModule1->MjestaDataSource;
+	}
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMoneyManagementForm::LoadImageButtonClick(TObject *Sender)
+{
+
+	 if
+	 (OpenDialog -> Execute()) {
+	   DataModule1 -> KorisnikTable -> Edit();
+	   static_cast<TBlobField*>(DataModule1->KorisnikTable->FieldByName("Slika"))->LoadFromFile(OpenDialog->FileName);
+	   DataModule1 -> KorisnikTable -> Post();
+	 }
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMoneyManagementForm::DeleteImageButtonClick(TObject *Sender)
+{
+	if(OpenDialog->Execute()){
+		DataModule1->KorisnikTable->Edit();
+		DataModule1->KorisnikTable->FieldByName("Slika")->Clear();
+		DataModule1->KorisnikTable->Post();
+
+	}
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMoneyManagementForm::ReportButtonClick(TObject *Sender)
+{
+	frxReport -> ShowReport();
+
+}
+//---------------------------------------------------------------------------
+

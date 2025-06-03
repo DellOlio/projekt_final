@@ -1,0 +1,253 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <vector>
+#include "Main.h"
+#include "Register.h"
+#include "MainMenu.h"
+#include "Settings.h"
+#include <map>
+#include <Registry.hpp>
+#include "ThreadZaMain.h"
+#include "TimeThread.h"
+#include "HelpThread.h"
+
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TMainForm *MainForm;
+//---------------------------------------------------------------------------
+__fastcall TMainForm::TMainForm(TComponent* Owner)
+	: TForm(Owner)
+{
+
+
+	ThreadZaMain *myThread = new ThreadZaMain(false);
+	TimeThread *myThread2 = new TimeThread(false);
+	HelpThread *myThread3 = new HelpThread(false);
+	TIniFile* ini = new TIniFile(GetCurrentDir() + "\\settings.ini");
+    if (ini->ReadBool("Main Window", "Underline", 0) ||
+        ini->ReadBool("Main Window", "Bold", 0) ||
+        ini->ReadBool("Main Window", "Italic", 0))
+    {
+        if (ini->ReadBool("Main Window", "Underline", 0) &&
+            ini->ReadBool("Main Window", "Bold", 0) &&
+            ini->ReadBool("Main Window", "Italic", 0))
+        {
+            MainForm->UsernameLabel->Font->Style =
+                TFontStyles() << fsUnderline << fsBold << fsItalic;
+            MainForm->PasswordLabel->Font->Style =
+                TFontStyles() << fsUnderline << fsBold << fsItalic;
+            MainForm->NoAccountLabel->Font->Style =
+                TFontStyles() << fsUnderline << fsBold << fsItalic;
+            MainForm->RememberMeCheckBox->Font->Style =
+                TFontStyles() << fsUnderline << fsBold << fsItalic;
+
+        } else if (ini->ReadBool("Main Window", "Underline", 0) &&
+                   ini->ReadBool("Main Window", "Bold", 0))
+        {
+            MainForm->UsernameLabel->Font->Style = TFontStyles()
+                                                   << fsUnderline << fsBold;
+            MainForm->PasswordLabel->Font->Style = TFontStyles()
+                                                   << fsUnderline << fsBold;
+            MainForm->NoAccountLabel->Font->Style = TFontStyles()
+                                                    << fsUnderline << fsBold;
+            MainForm->RememberMeCheckBox->Font->Style =
+                TFontStyles() << fsUnderline << fsBold;
+        } else if (ini->ReadBool("Main Window", "Underline", 0) &&
+                   ini->ReadBool("Main Window", "Italic", 0))
+        {
+            MainForm->UsernameLabel->Font->Style = TFontStyles()
+                                                   << fsUnderline << fsItalic;
+            MainForm->PasswordLabel->Font->Style = TFontStyles()
+                                                   << fsUnderline << fsItalic;
+            MainForm->NoAccountLabel->Font->Style = TFontStyles()
+                                                    << fsUnderline << fsItalic;
+            MainForm->RememberMeCheckBox->Font->Style =
+                TFontStyles() << fsUnderline << fsItalic;
+        } else if (ini->ReadBool("Main Window", "Italic", 0) &&
+                   ini->ReadBool("Main Window", "Bold", 0))
+        {
+            MainForm->UsernameLabel->Font->Style = TFontStyles()
+                                                   << fsItalic << fsBold;
+            MainForm->PasswordLabel->Font->Style = TFontStyles()
+                                                   << fsItalic << fsBold;
+            MainForm->NoAccountLabel->Font->Style = TFontStyles()
+                                                    << fsItalic << fsBold;
+            MainForm->RememberMeCheckBox->Font->Style = TFontStyles()
+                                                        << fsItalic << fsBold;
+        } else if (ini->ReadBool("Main Window", "Italic", 0)) {
+            MainForm->UsernameLabel->Font->Style = TFontStyles() << fsItalic;
+            MainForm->PasswordLabel->Font->Style = TFontStyles() << fsItalic;
+            MainForm->NoAccountLabel->Font->Style = TFontStyles() << fsItalic;
+            MainForm->RememberMeCheckBox->Font->Style = TFontStyles()
+                                                        << fsItalic;
+        } else if (ini->ReadBool("Main Window", "Bold", 0)) {
+            MainForm->UsernameLabel->Font->Style = TFontStyles() << fsBold;
+            MainForm->PasswordLabel->Font->Style = TFontStyles() << fsBold;
+            MainForm->NoAccountLabel->Font->Style = TFontStyles() << fsBold;
+            MainForm->RememberMeCheckBox->Font->Style = TFontStyles() << fsBold;
+        } else if (ini->ReadBool("Main Window", "Underline", 0)) {
+            MainForm->UsernameLabel->Font->Style = TFontStyles() << fsUnderline;
+            MainForm->PasswordLabel->Font->Style = TFontStyles() << fsUnderline;
+            MainForm->NoAccountLabel->Font->Style = TFontStyles()
+                                                    << fsUnderline;
+            MainForm->RememberMeCheckBox->Font->Style = TFontStyles()
+                                                        << fsUnderline;
+        }
+
+    } else {
+        MainForm->UsernameLabel->Font->Style = TFontStyles();
+        MainForm->PasswordLabel->Font->Style = TFontStyles();
+        MainForm->NoAccountLabel->Font->Style = TFontStyles();
+        MainForm->RememberMeCheckBox->Font->Style = TFontStyles();
+    }
+
+    delete ini;
+
+    TRegistry* reg = new TRegistry;
+    reg->RootKey = HKEY_LOCAL_MACHINE;
+    UnicodeString mykey = "Software\\MyappMarin";
+	if(reg->KeyExists(mykey)){
+
+		if (reg->OpenKey(mykey, true)) {
+			UsernameEdit->Text=reg->ReadString("username");
+			PasswordEdit->Text=reg->ReadString("password");
+			reg->CloseKey();
+		}
+	}
+
+	delete reg;
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::Image1Click(TObject *Sender)
+{
+    SettingsForm->Show();
+}
+
+
+std::vector<std::string> separateLoginInfo(std::string line)
+{
+	std::vector<std::string> vec;
+	std::stringstream s_stream(line);
+
+	while (s_stream.good()) {
+		std::string substr;
+		getline(s_stream, substr, ',');
+		vec.push_back(substr);
+	}
+	return vec;
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::RadioButton1Click(TObject *Sender)
+{
+
+	UsernameLabel->Caption = "Username";
+	PasswordLabel->Caption = "Password";
+	LogInButton->Caption = "Log in";
+	NoAccountLabel->Caption = "No account?";
+	RegisterButton->Caption = "Register";
+	RememberMeCheckBox->Caption = "Remember me";
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::RadioButton2Click(TObject *Sender)
+{
+	UsernameLabel->Caption = "Korisnicko ime";
+	PasswordLabel->Caption = "Lozinka";
+	LogInButton->Caption = "Ulogiraj me";
+	NoAccountLabel->Caption = "Nemate profil?";
+	RegisterButton->Caption = "Registracija";
+	RememberMeCheckBox->Caption = "Zapamti me";
+}
+const char* nameConvert(AnsiString a){
+	return a.c_str();
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::LogInButtonClick(TObject *Sender)
+{
+	bool UserFound = False;
+    fstream MyFile;
+    MyFile.open("RegisterInfo.txt", ios::in);
+    if (MyFile.is_open()) {
+        std::string line;
+
+		while (getline(MyFile, line) && UserFound == False) {
+            std::vector<std::string> LogInInfo = separateLoginInfo(line);
+			const char* username = LogInInfo.at(2).c_str();
+
+//			AnsiString usernameFromEdit = UsernameEdit->Text;
+//			const char* usernameReal = usernameFromEdit.c_str();
+			const char* usernameReal=nameConvert(UsernameEdit->Text);
+
+            if (std::strcmp(username, usernameReal) == 0) {
+				const char* password = LogInInfo.at(3).c_str();
+
+//				AnsiString passwordFromEdit = PasswordEdit->Text;
+//				const char* passwordReal = passwordFromEdit.c_str();
+
+				const char* passwordReal = nameConvert(PasswordEdit->Text);
+                if (std::strcmp(password, passwordReal) == 0) {
+                    TRegistry* reg = new TRegistry;
+                    reg->RootKey = HKEY_LOCAL_MACHINE;
+                    UnicodeString mykey = "Software\\MyappMarin";
+                    reg->CreateKey(mykey);
+                    if (reg->OpenKey(mykey, true)) {
+						if (RememberMeCheckBox->Checked) {
+                            reg->WriteString("username", UsernameEdit->Text);
+                            reg->WriteString("password", PasswordEdit->Text);
+                            reg->WriteBool("Remember me", 1);
+                        } else {
+                            reg->WriteString("username", "");
+                            reg->WriteString("password", "");
+                            reg->WriteBool("Remember me", 0);
+                        }
+                        reg->CloseKey();
+                    }
+
+					delete reg;
+					UserFound = True;
+					this->Hide();
+
+					MainMenuForm->Show();
+
+
+
+
+                } else {
+                    if (PasswordEdit->Text == "") {
+						IncorrectPassword->Caption = "Please enter your password";
+					}
+					else if(UserFound = True){
+							IncorrectPassword->Caption = "";
+                    }
+
+
+					 else {
+						IncorrectPassword->Caption =
+                            "Incorrect username or password";
+                    }
+                }
+
+            } else {
+				if (UsernameEdit->Text == "") {
+					IncorrectPassword->Caption = "Please enter your username";
+				} else if (PasswordEdit->Text == "") {
+					IncorrectPassword->Caption = "Please enter your password";
+                } else {
+					IncorrectPassword->Caption = "Incorrect username or password";
+                }
+            }
+        }
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::RegisterButtonClick(TObject *Sender)
+{
+	RegisterForm->Show();
+}
+//---------------------------------------------------------------------------
+

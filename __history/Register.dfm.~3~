@@ -1,0 +1,97 @@
+object RegisterForm: TRegisterForm
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 317
+  ClientWidth = 344
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  TextHeight = 15
+  object NameLabel: TLabel
+    Left = 56
+    Top = 64
+    Width = 32
+    Height = 15
+    Caption = 'Name'
+  end
+  object AgeLabel: TLabel
+    Left = 56
+    Top = 99
+    Width = 21
+    Height = 15
+    Caption = 'Age'
+  end
+  object UsernameLabel: TLabel
+    Left = 56
+    Top = 144
+    Width = 53
+    Height = 15
+    Caption = 'Username'
+  end
+  object PasswordLabel: TLabel
+    Left = 56
+    Top = 189
+    Width = 50
+    Height = 15
+    Caption = 'Password'
+  end
+  object NameEditRegister: TEdit
+    Left = 144
+    Top = 61
+    Width = 121
+    Height = 23
+    TabOrder = 0
+  end
+  object AgeEditRegister: TEdit
+    Left = 144
+    Top = 99
+    Width = 121
+    Height = 23
+    TabOrder = 1
+  end
+  object UsernameEditRegister: TEdit
+    Left = 144
+    Top = 141
+    Width = 121
+    Height = 23
+    TabOrder = 2
+  end
+  object PasswordEditRegister: TEdit
+    Left = 144
+    Top = 186
+    Width = 121
+    Height = 23
+    TabOrder = 3
+  end
+  object RegisterButton: TButton
+    Left = 88
+    Top = 231
+    Width = 129
+    Height = 58
+    Caption = 'Register'
+    TabOrder = 4
+    OnClick = RegisterButtonClick
+  end
+  object RadioButton1: TRadioButton
+    Left = 240
+    Top = 8
+    Width = 113
+    Height = 17
+    Caption = 'EN'
+    TabOrder = 5
+    OnClick = RadioButton1Click
+  end
+  object RadioButton2: TRadioButton
+    Left = 240
+    Top = 38
+    Width = 113
+    Height = 17
+    Caption = 'HR'
+    TabOrder = 6
+    OnClick = RadioButton2Click
+  end
+end

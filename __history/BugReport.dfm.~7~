@@ -1,0 +1,60 @@
+object BugReportForm: TBugReportForm
+  Left = 0
+  Top = 0
+  Caption = 'Form1'
+  ClientHeight = 415
+  ClientWidth = 610
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  TextHeight = 15
+  object formPlaceLabel: TLabel
+    Left = 32
+    Top = 51
+    Width = 34
+    Height = 15
+    Caption = 'Forma'
+  end
+  object DescriptionLabel: TLabel
+    Left = 32
+    Top = 107
+    Width = 60
+    Height = 15
+    Caption = 'Description'
+  end
+  object SaveButton: TButton
+    Left = 112
+    Top = 224
+    Width = 75
+    Height = 25
+    Caption = 'Save'
+    TabOrder = 0
+    OnClick = SaveButtonClick
+  end
+  object FormEdit: TEdit
+    Left = 112
+    Top = 48
+    Width = 121
+    Height = 23
+    TabOrder = 1
+  end
+  object DescriptionEdit: TEdit
+    Left = 112
+    Top = 104
+    Width = 209
+    Height = 114
+    TabOrder = 2
+  end
+  object LoadButton: TButton
+    Left = 246
+    Top = 224
+    Width = 75
+    Height = 25
+    Caption = 'Load'
+    TabOrder = 3
+    OnClick = LoadButtonClick
+  end
+end

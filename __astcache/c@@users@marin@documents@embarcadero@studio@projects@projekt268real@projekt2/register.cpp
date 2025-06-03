@@ -1,0 +1,53 @@
+﻿//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#pragma hdrstop
+#include <fstream>
+#include "Register.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TRegisterForm *RegisterForm;
+//---------------------------------------------------------------------------
+__fastcall TRegisterForm::TRegisterForm(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TRegisterForm::RadioButton1Click(TObject *Sender)
+{
+	NameLabel->Caption = "Name";
+	AgeLabel->Caption = "Age";
+	UsernameLabel->Caption = "Username";
+	PasswordLabel->Caption = "Password";
+	RegisterButton->Caption= "Register";
+}
+//---------------------------------------------------------------------------
+void __fastcall TRegisterForm::RadioButton2Click(TObject *Sender)
+{
+	NameLabel->Caption = "Ime";
+	AgeLabel->Caption = "Starost";
+	UsernameLabel->Caption = "Korisnicko ime";
+	PasswordLabel->Caption = "Lozinka";
+	RegisterButton->Caption= "Registracija";
+}
+//---------------------------------------------------------------------------
+void __fastcall TRegisterForm::RegisterButtonClick(TObject *Sender)
+{
+	fstream myFile;
+	myFile.open("RegisterInfo.txt",ios::app);
+	if(myFile.is_open()){
+
+	   AnsiString name= NameEditRegister->Text;
+	   AnsiString age= AgeEditRegister->Text;
+	   AnsiString username= UsernameEditRegister->Text;
+	   AnsiString password= PasswordEditRegister->Text;
+
+	   myFile<<name<<","<<age<<","<<username<<","<<password<<"\n";
+	   myFile.close();
+	   this->Close();
+
+
+	}
+}
+//---------------------------------------------------------------------------

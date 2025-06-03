@@ -1,0 +1,96 @@
+object SettingsForm: TSettingsForm
+  Left = 0
+  Top = 0
+  Caption = 'Settings'
+  ClientHeight = 433
+  ClientWidth = 622
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -12
+  Font.Name = 'Segoe UI'
+  Font.Style = []
+  OnClose = FormClose
+  TextHeight = 15
+  object Underline: TLabel
+    Left = 8
+    Top = 16
+    Width = 51
+    Height = 15
+    Caption = 'Underline'
+  end
+  object Label3: TLabel
+    Left = 9
+    Top = 48
+    Width = 24
+    Height = 15
+    Caption = 'Bold'
+  end
+  object Label4: TLabel
+    Left = 9
+    Top = 80
+    Width = 25
+    Height = 15
+    Caption = 'Italic'
+  end
+  object Label5: TLabel
+    Left = 9
+    Top = 112
+    Width = 46
+    Height = 15
+    Caption = 'Font size'
+  end
+  object UnderlineCheckBox: TCheckBox
+    Left = 128
+    Top = 16
+    Width = 97
+    Height = 17
+    TabOrder = 0
+  end
+  object CheckBoxBold: TCheckBox
+    Left = 128
+    Top = 48
+    Width = 97
+    Height = 17
+    TabOrder = 1
+  end
+  object CheckBoxItalic: TCheckBox
+    Left = 128
+    Top = 80
+    Width = 97
+    Height = 17
+    TabOrder = 2
+  end
+  object FontSizeComboBox: TComboBox
+    Left = 72
+    Top = 109
+    Width = 145
+    Height = 23
+    TabOrder = 3
+    Items.Strings = (
+      '8'
+      '9'
+      '10'
+      '11'
+      '12'
+      '13'
+      '14'
+      '15'
+      '16'
+      '17'
+      '18'
+      '19'
+      '20'
+      '21'
+      '22'
+      '23'
+      '24'
+      '25'
+      '26'
+      '27'
+      '28'
+      '29'
+      '30'
+      '')
+  end
+end

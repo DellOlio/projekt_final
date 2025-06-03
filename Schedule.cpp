@@ -1,0 +1,174 @@
+//---------------------------------------------------------------------------
+
+#include <vcl.h>
+#include <System.JSON.hpp>
+#include <memory>
+#pragma hdrstop
+
+
+#include "Schedule.h"
+//---------------------------------------------------------------------------
+#pragma package(smart_init)
+#pragma resource "*.dfm"
+TScheduleForm *ScheduleForm;
+//---------------------------------------------------------------------------
+__fastcall TScheduleForm::TScheduleForm(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+
+
+
+//---------------------------------------------------------------------------
+
+void __fastcall TScheduleForm::LoadJSONButtonClick(TObject *Sender)
+{
+
+	std::unique_ptr<TStringStream> jsonStream(new TStringStream);
+	jsonStream->LoadFromFile("schedule.json");
+
+	// dohvati cijeli JSON
+	TJSONObject* Schedule =(TJSONObject*)TJSONObject::ParseJSONValue(jsonStream->DataString);
+
+	// dohvati niz "classes" unutar JSON dokumenta
+	TJSONArray* Classes = (TJSONArray*)TJSONObject::ParseJSONValue(
+				Schedule->GetValue("classes")->ToString());
+
+	ListView1->Items->Clear();
+	for (int i = 0; i < Classes->Count; i++) {
+
+		ListView1->Items->Add();
+		ListView1->Items->Item[i]->Caption = Classes->Items[i]->GetValue<UnicodeString>("name");
+		ListView1->Items->Item[i]->SubItems->Add(Classes->Items[i]->GetValue<UnicodeString>("day"));
+		ListView1->Items->Item[i]->SubItems->Add(Classes->Items[i]->GetValue<UnicodeString>("time"));
+		ListView1->Items->Item[i]->SubItems->Add(Classes->Items[i]->GetValue<UnicodeString>("room"));
+
+	}
+
+
+}
+//---------------------------------------------------------------------------
+void __fastcall TScheduleForm::AddClassButtonClick(TObject *Sender)
+{
+
+
+	if (NameEdit->Text.IsEmpty() || DayEdit->Text.IsEmpty() || TimeEdit->Text.IsEmpty() || RoomEdit->Text.IsEmpty()) {
+		ShowMessage("All fields must have values.");
+		return;
+	}
+
+
+	ListView1->Items->Add();
+	int lastIndex = ListView1->Items->Count-1;
+	ListView1->Items->Item[lastIndex]->Caption = NameEdit->Text;
+	ListView1->Items->Item[lastIndex]->SubItems->Add(DayEdit->Text);
+	ListView1->Items->Item[lastIndex]->SubItems->Add(TimeEdit->Text);
+	ListView1->Items->Item[lastIndex]->SubItems->Add(RoomEdit->Text);
+
+
+
+	NameEdit->Text = "";
+	DayEdit->Text = "";
+	TimeEdit->Text = "";
+	RoomEdit->Text = "";
+	String Schedule;
+	Schedule = "{";
+		Schedule += "\"classes\":";
+		Schedule += "[";
+		// add existing contacts...
+		for(int i = 0; i < ListView1->Items->Count; i++){
+			Schedule +=
+			"{"
+				"\"name\":\"" + ListView1->Items->Item[i]->Caption + "\"," +
+				"\"day\":\"" + ListView1->Items->Item[i]->SubItems->Strings[0] + "\"," +
+				"\"time\":\"" + ListView1->Items->Item[i]->SubItems->Strings[1] + "\"," +
+				"\"room\":\"" + ListView1->Items->Item[i]->SubItems->Strings[2] + "\"" +
+			"}";
+			Schedule += (i+1 != ListView1->Items->Count) ? "," : "";
+		}
+		Schedule += "]";
+	Schedule += "}";
+
+	Schedule = ((TJSONObject*)TJSONObject::ParseJSONValue(Schedule))->Format(2);
+
+	std::unique_ptr<TStringStream> ss(new TStringStream);
+	ss->WriteString(Schedule);
+	ss->SaveToFile("schedule.json");
+
+}
+
+
+//---------------------------------------------------------------------------
+void __fastcall TScheduleForm::DeleteClassButtonClick(TObject *Sender)
+{
+	  ListView1->DeleteSelected();
+
+      String Schedule;
+	Schedule = "{";
+		Schedule += "\"classes\":";
+		Schedule += "[";
+		// add existing contacts...
+		for(int i = 0; i < ListView1->Items->Count; i++){
+			Schedule +=
+			"{"
+				"\"name\":\"" + ListView1->Items->Item[i]->Caption + "\"," +
+				"\"day\":\"" + ListView1->Items->Item[i]->SubItems->Strings[0] + "\"," +
+				"\"time\":\"" + ListView1->Items->Item[i]->SubItems->Strings[1] + "\"," +
+				"\"room\":\"" + ListView1->Items->Item[i]->SubItems->Strings[2] + "\"" +
+			"}";
+			Schedule += (i+1 != ListView1->Items->Count) ? "," : "";
+		}
+		Schedule += "]";
+	Schedule += "}";
+
+	Schedule = ((TJSONObject*)TJSONObject::ParseJSONValue(Schedule))->Format(2);
+
+	std::unique_ptr<TStringStream> ss(new TStringStream);
+	ss->WriteString(Schedule);
+	ss->SaveToFile("schedule.json");
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TScheduleForm::EditClassButtonClick(TObject *Sender)
+{
+      if(ListView1->ItemIndex == -1)
+		return;
+
+      if (NameEdit->Text.IsEmpty() || DayEdit->Text.IsEmpty() || TimeEdit->Text.IsEmpty() || RoomEdit->Text.IsEmpty() )
+		{
+			ShowMessage("All fields must have values.");
+			return;
+		}
+
+		ListView1->Items->Item[ListView1->ItemIndex]->Caption = NameEdit->Text;
+		ListView1->Items->Item[ListView1->ItemIndex]->SubItems->Strings[0] = DayEdit->Text;
+		ListView1->Items->Item[ListView1->ItemIndex]->SubItems->Strings[1] = TimeEdit->Text;
+		ListView1->Items->Item[ListView1->ItemIndex]->SubItems->Strings[2] = RoomEdit->Text;
+
+		String Schedule;
+		Schedule = "{";
+			Schedule += "\"classes\":";
+			Schedule += "[";
+			// add existing contacts...
+			for(int i = 0; i < ListView1->Items->Count; i++){
+				Schedule +=
+				"{"
+					"\"name\":\"" + ListView1->Items->Item[i]->Caption + "\"," +
+					"\"day\":\"" + ListView1->Items->Item[i]->SubItems->Strings[0] + "\"," +
+					"\"time\":\"" + ListView1->Items->Item[i]->SubItems->Strings[1] + "\"," +
+					"\"room\":\"" + ListView1->Items->Item[i]->SubItems->Strings[2] + "\"" +
+				"}";
+				Schedule += (i+1 != ListView1->Items->Count) ? "," : "";
+			}
+			Schedule += "]";
+		Schedule += "}";
+
+		Schedule = ((TJSONObject*)TJSONObject::ParseJSONValue(Schedule))->Format(2);
+
+		std::unique_ptr<TStringStream> ss(new TStringStream);
+		ss->WriteString(Schedule);
+		ss->SaveToFile("schedule.json");
+
+}
+
+//---------------------------------------------------------------------------
